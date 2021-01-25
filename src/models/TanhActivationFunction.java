@@ -2,7 +2,11 @@ package models;
 
 import models.structs.IActivationFunction;
 
-public class TanhActivationFunction implements IActivationFunction {
+import java.io.Serializable;
+
+public class TanhActivationFunction implements IActivationFunction, Serializable {
+    private static final long serialVersionUID = 4L;
+
     @Override
     public double func(double x) {
         return Math.tanh(x);

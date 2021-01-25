@@ -1,11 +1,13 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class ArrayMap {
+public class ArrayMap implements Serializable {
     private int rows;
     private int cols;
     private double[][] data;
+    private static final long serialVersionUID = 4L;
 
     public ArrayMap(int rows, int cols) {
         this.rows = rows;
@@ -62,7 +64,7 @@ public class ArrayMap {
     }
 
     public double[] toArray() {
-        double[] arr = new double[this.rows + this.cols];
+        double[] arr = new double[this.rows * this.cols];
         int index = 0;
         for(int i = 0; i < this.rows; i++) {
             for(int j = 0; j < this.cols; j++) {
@@ -108,6 +110,11 @@ public class ArrayMap {
     }
 
     public static ArrayMap multiply(ArrayMap a, ArrayMap b) {
+        if(a.getCols() != b.getRows()) {
+            System.out.println("ERROR BITCH");
+            return null;
+        }
+
         ArrayMap result = new ArrayMap(a.getRows(), b.getCols());
         for(int i = 0; i < a.getRows(); i++) {
             for(int j = 0; j < b.getCols(); j++) {
@@ -164,5 +171,19 @@ public class ArrayMap {
                 }
             }
         }
+    }
+
+    public void print() {
+        System.out.print("[");
+        for(int i = 0; i < this.rows; i++) {
+            System.out.print("[ ");
+            for(int j = 0;j < this.cols; j++) {
+                System.out.print(this.data[i][j] + ", ");
+            }
+            System.out.print("]");
+            if(i != this.rows-1)
+                System.out.println();
+        }
+        System.out.println("]");
     }
 }

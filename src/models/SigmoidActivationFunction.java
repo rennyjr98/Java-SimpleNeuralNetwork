@@ -2,7 +2,11 @@ package models;
 
 import models.structs.IActivationFunction;
 
-public class SigmoidActivationFunction implements IActivationFunction {
+import java.io.Serializable;
+
+public class SigmoidActivationFunction implements IActivationFunction, Serializable {
+    private static final long serialVersionUID = 4L;
+
     @Override
     public double func(double x) {
         return 1 / (1 + Math.exp(-x));

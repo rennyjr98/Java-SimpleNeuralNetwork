@@ -7,6 +7,7 @@ public class NeuralNetwork implements Serializable {
     private int hiddenNodes;
     private int outputNodes;
     private float learningRate;
+    private static final long serialVersionUID = 4L;
 
     private ArrayMap weightIh;
     private ArrayMap weightH0;
@@ -123,7 +124,7 @@ public class NeuralNetwork implements Serializable {
         this.biasO.add(gradients);
 
         // Calculate the hidden layer errors
-        ArrayMap whoT = ArrayMap.activatedFunc(hiddens, this.sigmoid);
+        ArrayMap whoT = ArrayMap.transpose(this.weightH0);
         ArrayMap hiddenErrors = ArrayMap.multiply(whoT, output_error);
 
         // Calculate hidden gradient
@@ -144,6 +145,27 @@ public class NeuralNetwork implements Serializable {
         ObjectOutputStream objout = new ObjectOutputStream(fout);
         objout.writeObject(this);
         objout.close();
+    }
+
+    public void serialize(String pathname) throws FileNotFoundException, IOException {
+        FileOutputStream fout = new FileOutputStream(new File(pathname + "brain.rl").getAbsolutePath());
+        ObjectOutputStream objout = new ObjectOutputStream(fout);
+        objout.writeObject(this);
+        objout.close();
+    }
+
+    public static NeuralNetwork deserialize() throws ClassNotFoundException, IOException {
+        ObjectInputStream input = new ObjectInputStream(
+                new BufferedInputStream(
+                        new FileInputStream(new File("brain.rl").getAbsolutePath())));
+        return (NeuralNetwork) input.readObject();
+    }
+
+    public static NeuralNetwork deserialize(String pathname) throws ClassNotFoundException, IOException {
+        ObjectInputStream input = new ObjectInputStream(
+                new BufferedInputStream(
+                        new FileInputStream(new File(pathname).getAbsolutePath())));
+        return (NeuralNetwork) input.readObject();
     }
 
     public NeuralNetwork copy() {
